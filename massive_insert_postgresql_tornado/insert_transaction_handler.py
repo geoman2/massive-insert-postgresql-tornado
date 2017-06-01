@@ -2,7 +2,6 @@
 """
 
 import tornado
-from tornado.web import gen
 
 class InsertTransactionHandler(tornado.web.RequestHandler):
 
