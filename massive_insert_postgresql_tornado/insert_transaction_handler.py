@@ -29,7 +29,7 @@ class InsertTransactionHandler(tornado.web.RequestHandler):
         messages = items["messages"]
         amount = len(messages)
 
-        for counter, item in enumerate(items["messages"]):
+        for counter, item in enumerate(messages):
             key = "message_" + str(counter)
 
             sql += "(%(" + key + ")s)"

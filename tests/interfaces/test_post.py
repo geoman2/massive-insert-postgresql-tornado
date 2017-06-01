@@ -30,5 +30,9 @@ def test_post_multiple_inserts():
     assert r.status_code == 200
 
 def test_post_copy_handler():
-    r = requests.post(BASE_URL + '/copy')
+    r = requests.post(
+        BASE_URL + '/copy',
+        headers={'Content-type': 'application/json'},
+        data=json.dumps(DATA)
+    )
     assert r.status_code == 200
