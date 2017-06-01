@@ -21,7 +21,7 @@ def upgrade():
     conn.execute(
         """
         CREATE TABLE items (
-            id INT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             message TEXT NOT NULL
         );
         """
