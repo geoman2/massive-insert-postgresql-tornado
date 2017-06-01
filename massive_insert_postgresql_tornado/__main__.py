@@ -16,9 +16,9 @@ def main():
 
     application_tornado = tornado.web.Application(
         [
-            (r"/insert-transaction", InsertTransactionHandler),
-            (r"/multiple-inserts", MultipleInsertsHandler),
-            (r"/copy", CopyHandler),
+            ("/insert-transaction", InsertTransactionHandler),
+            ("/multiple-inserts", MultipleInsertsHandler),
+            ("/copy", CopyHandler),
         ],
     )
 
