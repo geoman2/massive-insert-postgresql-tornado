@@ -1,6 +1,7 @@
 from __future__ import with_statement
+import os
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, create_engine
 from logging.config import fileConfig
 
 # this is the Alembic Config object, which provides
@@ -22,6 +23,17 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+def get_url():
+    """
+    Database credentials to replace SQLAlchemy
+    """
+    return "postgresql://%s:%s@%s/%s" % (
+        os.getenv("DB_USER"),
+        os.getenv("DB_PASSWORD"),
+        os.getenv("DB_HOST"),
+        os.getenv("DB_NAME"),
+    )
+
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -35,7 +47,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = get_url()
     context.configure(
         url=url, target_metadata=target_metadata, literal_binds=True)
 
@@ -50,10 +62,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool)
+    connectable = create_engine(get_url())
 
     with connectable.connect() as connection:
         context.configure(

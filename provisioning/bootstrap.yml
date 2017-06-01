@@ -31,3 +31,10 @@
         insertafter=EOF
       with_items:
         - "cd {{ ansible_env.APP_PATH }}"
+
+    - name: migrate database
+      shell: "{{ ansible_env.VIRTUAL_ENV_PATH }}/bin/alembic upgrade head"
+      args:
+        chdir: "{{ ansible_env.APP_PATH }}"
+      environment:
+        PYTHONPATH: /{{ ansible_env.APP_PATH }}/bin
