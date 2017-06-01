@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_VERSION) do |config|
     app.ssh.username = "vagrant"
 
     # forward Locust port for host web browser usage
-    app.vm.network "forwarded_port", guest: 8089, host: 8089
+    app.vm.network "forwarded_port", guest: 8080, host: 8080
 
     app.vm.provision "ansible", type: "shell" do |ansible|
       ansible.env = environment_variables
