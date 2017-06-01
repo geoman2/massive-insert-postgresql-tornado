@@ -5,7 +5,7 @@ import tornado
 import tornado.web
 
 from .insert_transaction_handler import InsertTransactionHandler
-from .multiple_inserts_handler import MultipleInsersHandler
+from .multiple_inserts_handler import MultipleInsertsHandler
 from .copy_handler import CopyHandler
 
 from .config import TORNADO_PORT
@@ -16,10 +16,17 @@ def main():
 
     application_tornado = tornado.web.Application(
         [
-            (r"/api", ApiHandler,),
+            (r"/insert-transaction", InsertTransactionHandler),
+            (r"/multiple-inserts", MultipleInsertsHandler),
+            (r"/copy", CopyHandler),
         ],
     )
-    application_tornado.listen(TORNADO_PORT, decompress_request=True)
+
+    application_tornado.listen(
+        TORNADO_PORT,
+        decompress_request=True
+    )
+
     tornado.ioloop.IOLoop.current().start()
 
 if __name__ == '__main__':
