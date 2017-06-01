@@ -8,6 +8,10 @@ VIRTUAL_ENV_PATH="/tmp/virtual_env35"
 TARGET="dev"
 TORNADO_PORT="8080"
 PROJECT = "massive-insert-postgresql-tornado"
+DB_USER = "vagrant"
+DB_PASSWORD = "vagrant"
+DB_HOST = "db"
+DB_NAME = "vagrant"
 
 ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
@@ -22,7 +26,23 @@ Vagrant.configure(VAGRANTFILE_VERSION) do |config|
     "VIRTUAL_ENV_PATH" => VIRTUAL_ENV_PATH,
     "PROJECT" => PROJECT,
     "TORNADO_PORT" => TORNADO_PORT,
+    "DB_USER" => DB_USER,
+    "DB_PASSWORD" => DB_PASSWORD,
+    "DB_HOST" => DB_HOST,
+    "DB_NAME" => DB_NAME,
   }
+
+  config.vm.define "db" do |app|
+    app.vm.provider "docker" do |d|
+      d.image = "postgres:9.4"
+      d.name = "#{PROJECT}_db"
+      d.env = {
+        "POSTGRES_PASSWORD" => DB_PASSWORD,
+        "POSTGRES_USER" => DB_USER,
+        "POSTGRES_DB" => DB_NAME,
+      }
+    end
+  end
 
   config.ssh.insert_key = true
   config.vm.define "dev", primary: true do |app|
@@ -35,7 +55,7 @@ Vagrant.configure(VAGRANTFILE_VERSION) do |config|
     app.ssh.username = "vagrant"
 
     # forward Locust port for host web browser usage
-    app.vm.network "forwarded_port", guest: 8089, host: 8089
+    app.vm.network "forwarded_port", guest: 8080, host: 8080
 
     app.vm.provision "ansible", type: "shell" do |ansible|
       ansible.env = environment_variables
