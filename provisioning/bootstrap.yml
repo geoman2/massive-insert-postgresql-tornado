@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  become: yes
+
+  tasks:
+
+    - name: install python3
+      apt:
+        name="{{ item }}"
+        state=present
+      with_items:
+        - python3-dev
+
+    - name: install pip packages tox
+      pip:
+        name="tox"
+        state=latest
+
+    - name: creating tox environment
+      shell: >
+        tox -r -e {{ ansible_env.ENV_NAME }}
+      args:
+        chdir: "{{ ansible_env.APP_PATH }}"
+        creates: "{{ ansible_env.VIRTUAL_ENV_PATH }}"
+
+    - name: add zshrc lines for developer
+      when: ansible_env.TARGET == "dev"
+      lineinfile:
+        dest="/home/vagrant/.zshrc"
+        line="{{ item }}"
+        insertafter=EOF
+      with_items:
+        - "cd {{ ansible_env.APP_PATH }}"
