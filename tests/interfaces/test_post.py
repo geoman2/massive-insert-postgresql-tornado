@@ -1,3 +1,4 @@
+import json
 import pytest
 import requests
 
@@ -8,7 +9,21 @@ def test_post_insert_transaction():
     assert r.status_code == 200
 
 def test_post_multiple_inserts():
-    r = requests.post(BASE_URL + '/multiple-inserts')
+
+    data = {
+        "messages": [
+            {"message": "hello world"},
+            {"message": "bonjour tout le monde"},
+            {"message": "da jia hao"}
+        ]
+    }
+
+    r = requests.post(
+        BASE_URL + '/multiple-inserts',
+        headers={'Content-type': 'application/json'},
+        data=json.dumps(data)
+    )
+
     assert r.status_code == 200
 
 def test_post_copy_handler():
