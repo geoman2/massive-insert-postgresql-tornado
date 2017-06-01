@@ -50,6 +50,7 @@ Vagrant.configure(VAGRANTFILE_VERSION) do |config|
       d.image = "allansimon/allan-docker-dev-python"
       d.name = "#{PROJECT}_dev"
       d.has_ssh = true
+      d.link "#{PROJECT}_db:db"
       d.env = environment_variables
     end
     app.ssh.username = "vagrant"
