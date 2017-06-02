@@ -11,6 +11,9 @@ The tests have been performed with 100 simulated clients.
 The clients are supposed to send requests every 5 milliseconds,
 every request posts 100 messages (100 items to insert).
 
+For every test, I report the amount of RPS (requests per second),
+the service is able to handle. I also report the PostgreSQL CPU.
+
 #### Individual inserts
 
 Every item is inserted by an individual INSERT statement.
@@ -91,6 +94,10 @@ with self.db:
 
 275 RPS
 PostgreSQL CPU 30%
+
+### Conclusion
+
+For massive inserts, use the `psycopg2.copy_from()` method is optimized.
 
 ## Start the service
 
