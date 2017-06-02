@@ -6,7 +6,7 @@ from locust import task
 
 class UserBehavior(TaskSet):
 
-    @task(0)
+    @task(10)
     def post_copy(self):
 
         items = [{"message": "hello world"}]
@@ -28,7 +28,7 @@ class UserBehavior(TaskSet):
             json.dumps(data),
         )
 
-    @task(10)
+    @task(0)
     def post_multiple_inserts(self):
 
         items = [{"message": "hello world"}]
